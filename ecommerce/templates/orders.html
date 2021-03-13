@@ -1,0 +1,44 @@
+{% extends 'header.html' %}
+{% load static %}
+{% load cart %}
+{% block title %}
+    <title>Orders - Ecommerce</title>
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="container">
+    <br>
+        <h1>Orders</h1>
+        <table class="table">
+
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col"></th>
+              <th scope="col">Name</th>
+              <th scope="col">Price</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Total</th>
+
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for product in products %}
+                <tr>
+                  <th scope="row">{{ forloop.counter }}</th>
+                  <th><img src="/media/{{ product.image }}" class="rounded-circle" style="height: 80px;"></th>
+                  <td>{{ product.name }}</td>
+                  <td>{{ product.price|currency }}</td>
+                  <td>{{ product|cart_quantity:request.session.cart }}</td>
+                  <td>{{ product|price_total:request.session.cart|currency }}</td>
+                </tr>
+            {% endfor %}
+          </tbody>
+
+
+    </div>
+
+{% endblock %}

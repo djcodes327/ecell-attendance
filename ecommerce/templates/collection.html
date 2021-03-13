@@ -1,0 +1,80 @@
+{% extends 'header.html' %}
+{% load static %}
+{% load cart %}
+{% block title %}
+    <title>Collection- Django Ecommerce</title>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div class="col-lg-3 mx-auto">
+                {% for category in categories %}
+                        <div class="list-group">
+                              <a href="/shop/collection/?category={{ category.id }}" class="list-group-item list-group-item-action">
+                                  {{ category.name }}
+                              </a>
+                        </div>
+                {% endfor %}
+
+            </div>
+
+            <div class="col-lg-9 mx-auto">
+
+                <div class="row mx-auto">
+
+                    {% for product in products %}
+
+                        <div class="card mx-auto mt-5 mb-5"  style="width: 18rem;">
+                            <img src="/media/{{ product.image }}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ product.name }}</h5>
+                                    <p class="card-text">{{ product.price }}</p>
+                                </div>
+
+                                <div class="card-footer no-gutters">
+                                    {% if product|is_in_cart:request.session.cart %}
+                                       <div class="row">
+
+                                            <form action="{% url 'collection' %}" method="post" class="col-2 btn-block">
+                                                {% csrf_token %}
+                                                <input hidden type="text" name='product' value='{{product.id}}'>
+								                <input hidden type="text" name='remove' value='True'>
+                                                <input type="submit" value="-" class="btn btn-block btn-light">
+                                            </form>
+
+                                            <div class="text-center col">{{ product|cart_quantity:request.session.cart }} in Cart</div>
+
+                                            <form action="{% url 'collection' %}" method="post" class="col-2 btn-block">
+                                                {% csrf_token %}
+                                                <input type="hidden" value="{{ product.id }}" name="product">
+                                                <input type="submit" value="+" class="btn btn-block btn-light">
+                                            </form>
+
+                                        </div>
+                                    {% else %}
+                                         <form action="{% url 'collection' %}" method="post" class="btn-block">
+                                            {% csrf_token %}
+                                            <input type="hidden" value="{{ product.id }}" name="product">
+                                            <button class="btn btn-block btn-primary" type="submit">Add to Cart</button>
+                                        </form>
+
+                                    {% endif %}
+
+                                </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
