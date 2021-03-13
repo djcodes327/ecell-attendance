@@ -1,1 +1,1 @@
-web: gunicorn ecell_attendance_backend.wsgi --log-file -
+web: gunicorn ecell_attendance_backend.wsgi
