@@ -15,7 +15,7 @@ class StudentSerializer(serializers.ModelSerializer):
             'gr_no',
             'enrollment_no',
             'branch',
-            'status', 
+            'status',
             'last_login',
         ]
 
